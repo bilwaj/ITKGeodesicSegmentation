@@ -13,7 +13,6 @@ typedef itk::ImageFileReader<ImageType> ReaderType;
 typedef itk::ImageFileWriter<ImageType> WriterType;
 typedef itk::ImageRegionIteratorWithIndex<ImageType> IteratorType;
 //static void CreateImage(ImageType::Pointer image);
- 
 //Expects smart pointers to scalar image objects. These need to be pointing to 4 separate memory blocks
 void geos(ImageType::Pointer Inp, ImageType::Pointer Init, ImageType::Pointer Geos, ImageType::Pointer Gamma)
 { 
