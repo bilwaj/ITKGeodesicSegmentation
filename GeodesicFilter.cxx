@@ -141,23 +141,35 @@ void geos(ImageType::Pointer Inp, ImageType::Pointer Init, ImageType::Pointer Ge
 }
 
 int main(int argc, char *argv[])
-{ //TODO: Implement error check
+{ 
+  try{
   // Get input image
   ReaderType::Pointer input = ReaderType::New();
   //input->SetFileName("C:\Users\bilwaj\Desktop\GeodesicFilter\Debug\1.nii");
   input->SetFileName(argv[1]);
+  try{
   input->Update();
-  std::cout << "1st image read.\n";
+  std::cout << "First image read"<<std::endl;
+  }
+  catch(int e)
+  {
+	  std::cout<<"Cannot load image"<<e<<std::endl;
+  }
   //Assign Inp pointer to input image in memory
   ImageType::Pointer Inp=ImageType::New();
   Inp=input->GetOutput();
-
-  //Get Initialization 
+  //Get Initialization image
   ReaderType::Pointer initial =ReaderType::New();
   initial->SetFileName(argv[2]);
   //initial->SetFileName("C:\Users\bilwaj\Desktop\GeodesicFilter\Debug\init_spine.nii");
+  try{
   initial->Update();
-  std::cout << "2nd image read.\n";
+  std::cout << "Second image read"<<std::endl;
+  }
+  catch(int e)
+  {
+	  std::cout<<"Cannot load initialization"<<e<<std::endl;
+  }
   //Assign init pointer to initialization
   ImageType::Pointer Init = ImageType::New();
   Init=initial->GetOutput();
@@ -191,13 +203,17 @@ int main(int argc, char *argv[])
   geos(Inp,Init,Geos,Gamma);
 
   std::cout<<"Writing output"<<std::endl;
-
-
   WriterType::Pointer output=WriterType::New();
-  output->SetFileName("geos.nii");
+  output->SetFileName(argv[3]);
   output->SetInput(Geos);
   output->Update();
 
   //std::cout<<max_val<<std::endl;
   return EXIT_SUCCESS;
+  }
+  catch(int exception)
+  {
+	  std::cout<<"Exception thrown: "<<exception<<std::endl;
+	  std::cout<<"Usage: GeodesicFilter t1.nii init.nii geos.nii"<<std::endl;
+  }
 }
